@@ -24,7 +24,7 @@ static void _testGpio(void);
 static void _readGpio(void);
 static void _writeGpio(bool value);
 
-void apTestInit(void)
+void apTestGpioInit(void)
 {
     /* gpio init */
     for(int i = TEST_GPIO_OUTPUT_0; i < TEST_GPIO_OUTPUT_LENGTH; i++)
@@ -39,7 +39,7 @@ void apTestInit(void)
     }
 }
 
-void apTestLoop(void)
+void apTestGpioLoop(void)
 {
     _testGpio();
 }

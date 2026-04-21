@@ -5,7 +5,8 @@
  */
 
 #include "pico/stdlib.h"
-#include "my_src/ap_test.h"
+#include "my_src/ap_test_gpio.h"
+#include "my_src/ap_test_serial.h"
 
 // Pico W devices use a GPIO on the WIFI chip for the LED,
 // so when building for Pico W, CYW43_WL_GPIO_LED_PIN will be defined
@@ -46,11 +47,12 @@ int main() {
     int rc = pico_led_init();
     hard_assert(rc == PICO_OK);
 
-    apTestInit();
+    apTestGpioInit();
+    apTestSerialInit();
 
     while (true) {
-        apTestLoop();
-
+        apTestGpioLoop();
+        apTestSerialLoop();
         pico_set_led(true);
         sleep_ms(LED_DELAY_MS);
         pico_set_led(false);

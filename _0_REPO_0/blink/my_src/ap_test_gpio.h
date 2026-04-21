@@ -1,2 +1,2 @@
-void apTestInit(void);
-void apTestLoop(void);
+void apTestGpioInit(void);
+void apTestGpioLoop(void);
