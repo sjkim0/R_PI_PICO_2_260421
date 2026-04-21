@@ -36,9 +36,10 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(blink
-    blink.c
-    my_src/ap_test_gpio.c
-    my_src/ap_test_serial.c
+    main.c
+    my_src/ap/ap_test_gpio.c
+    my_src/ap/ap_test_serial.c
+    my_src/ap.c
     )
 
 # pull in common dependencies
