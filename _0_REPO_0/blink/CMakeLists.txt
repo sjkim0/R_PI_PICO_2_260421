@@ -35,15 +35,31 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
+set(PROJ_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(SRC_DIR ${PROJ_DIR}/my_src)
+set(BSP_DIR ${PROJ_DIR}/my_src/bsp)
+set(AP_DIR ${PROJ_DIR}/my_src/ap)
+
 add_executable(blink
     main.c
-    my_src/ap/ap_test_gpio.c
-    my_src/ap/ap_test_serial.c
-    my_src/ap.c
+    ${AP_DIR}/ap_task.c
+    ${AP_DIR}/ap_test_gpio.c
+    ${AP_DIR}/ap_test_serial.c
+
+    ${SRC_DIR}/ap.c
+
+    ${BSP_DIR}/bsp.c
     )
+    
+target_include_directories(blink PRIVATE
+    ${SRC_DIR}
+    ${SRC_DIR}/ap
+    ${SRC_DIR}/bsp
+)
 
 # pull in common dependencies
 target_link_libraries(blink pico_stdlib)
+
 
 if (PICO_CYW43_SUPPORTED)
     target_link_libraries(blink pico_cyw43_arch_none)

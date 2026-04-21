@@ -1,4 +1,14 @@
+#ifndef AP_DEF_H
+#define AP_DEF_H
+
+
+#include "bsp.h"
+
+
 #define DEF_SLEEP_MS_0 (250U)
+#define DEF_TEST_SERIAL_WRITE_BUFF_LENGTH (64U)
+#define DEF_TEST_SERIAL_READ_BUFF_LENGTH (64U)
+
 
 enum TEST_GPIO_OUTPUT
 {
@@ -18,6 +28,4 @@ enum TEST_GPIO_INPUT
     TEST_GPIO_INPUT_LENGTH
 };
 
-
-#define DEF_TEST_SERIAL_WRITE_BUFF_LENGTH (64U)
-#define DEF_TEST_SERIAL_READ_BUFF_LENGTH (64U)
+#endif

@@ -3,7 +3,6 @@
 #include "pico/stdio.h"
 #include "pico/time.h"
 #include "hardware/gpio.h"
-#include "ap_test_def.h"
 
 
 typedef struct
