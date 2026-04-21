@@ -37,6 +37,8 @@ pico_sdk_init()
 
 add_executable(blink
     blink.c
+    my_src/ap_test_gpio.c
+    my_src/ap_test_serial.c
     )
 
 # pull in common dependencies
