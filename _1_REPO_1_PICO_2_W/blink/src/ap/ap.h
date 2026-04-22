@@ -4,6 +4,7 @@
 // #include "ap_test_serial.h"
 // #include "ap_adc.h"
 // #include "ap_adc_dma.h"
+#include "ap_bt_standalone_server.h"
 
 
 void apInit(void);

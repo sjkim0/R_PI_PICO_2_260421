@@ -40,6 +40,7 @@ set(SRC_DIR ${PROJ_DIR}/src)
 set(BSP_DIR ${PROJ_DIR}/src/bsp)
 set(AP_DIR ${PROJ_DIR}/src/ap)
 set(PIO_DIR ${PROJ_DIR}/src/pio)
+set(GATT_DIR ${PROJ_DIR}/src/gatt)
 
 add_executable(PICO_2_W_TEST)
 
@@ -47,6 +48,7 @@ target_sources(PICO_2_W_TEST PRIVATE
                ${SRC_DIR}/main.c
                ${AP_DIR}/ap_task.c
                ${AP_DIR}/ap_test.c
+               ${AP_DIR}/ap_bt_standalone_server.c
                ${AP_DIR}/ap.c
                ${BSP_DIR}/bsp.c)
 
@@ -57,10 +59,19 @@ target_include_directories(PICO_2_W_TEST PRIVATE
 )
 
 # pull in common dependencies
-target_link_libraries(PICO_2_W_TEST pico_stdlib)
+target_link_libraries(PICO_2_W_TEST 
+                      pico_stdlib
+                      hardware_adc)
 
 if (PICO_CYW43_SUPPORTED)
-    target_link_libraries(PICO_2_W_TEST pico_cyw43_arch_none)
+    target_link_libraries(PICO_2_W_TEST 
+                          pico_cyw43_arch_none
+                          pico_btstack_ble
+                          pico_btstack_cyw43)
+
+pico_btstack_make_gatt_header(PICO_2_W_TEST PRIVATE 
+                             ${GATT_DIR}/temp_sensor.gatt)
+
 endif()
 
 # create map/bin/hex file etc.
