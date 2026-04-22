@@ -51,7 +51,7 @@ void apAdcInit(void)
 
     for(int i = 0; i < AP_ADC_TASK_LENGTH; i++)
     {
-        apTaskInit(true, &ap_adc_inst.task[i], 1000, _apAdcHelloTask);
+        apTaskInit(true, &ap_adc_inst.task[i], 1000, _apAdcHelloTask, true, 0);
     }
 }
 

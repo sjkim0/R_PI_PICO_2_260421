@@ -25,7 +25,7 @@ enum ENUM_AP_ADC_DMA_TASK
 typedef struct 
 {
     ap_task_t task[ENUM_AP_ADC_DMA_TASK_LENGTH];
-    uint8_t capture_buf[CAPTURE_DEPTH];
+    uint16_t capture_buf[CAPTURE_DEPTH];
 }ap_adc_dma_t;
 
 
@@ -50,7 +50,8 @@ void apAdcDmaInit(void)
         true,    // Enable DMA data request (DREQ)
         1,       // DREQ (and IRQ) asserted when at least 1 sample present
         false,   // We won't see the ERR bit because of 8 bit reads; disable.
-        true     // Shift each sample to 8 bits when pushing to FIFO
+        // true     // Shift each sample to 8 bits when pushing to FIFO
+        false   // Don't shift to 8 bits; we'll do this in the DMA transfer configuration, so we can read directly into an 8-bit buffer.
     );
 
     // Divisor of 0 -> full speed. Free-running capture with the divider is
@@ -68,7 +69,8 @@ void apAdcDmaInit(void)
     dma_channel_config cfg = dma_channel_get_default_config(dma_chan);
 
     // Reading from constant address, writing to incrementing byte addresses
-    channel_config_set_transfer_data_size(&cfg, DMA_SIZE_8);
+    // channel_config_set_transfer_data_size(&cfg, DMA_SIZE_8);  // 8-bit transfers, so we can read directly into our uint8_t buffer without worrying about the upper bits being garbage
+    channel_config_set_transfer_data_size(&cfg, DMA_SIZE_16);
     channel_config_set_read_increment(&cfg, false);  // source 주소를 늘리지 않음
     channel_config_set_write_increment(&cfg, true);  // destination 버퍼 주소는 한칸씩 증가
 
@@ -93,7 +95,7 @@ void apAdcDmaInit(void)
     adc_run(false);
     adc_fifo_drain();
 
-    apTaskInit(true, &ap_adc_dma_inst.task[ENUM_AP_ADC_DMA_TASK_0], 1000, _apAdcDmaTask0);
+    apTaskInit(true, &ap_adc_dma_inst.task[ENUM_AP_ADC_DMA_TASK_0], 1000, _apAdcDmaTask0, false, 10);
 }
 
 void apAdcDmaLoop(void)

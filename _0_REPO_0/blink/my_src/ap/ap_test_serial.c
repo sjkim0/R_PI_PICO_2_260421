@@ -30,7 +30,7 @@ static void _apTestSerialTxTask(void);
 void apTestSerialInit(void)
 {
     stdio_init_all();
-    apTaskInit(true, &ap_test_serial_task[AP_TEST_SERIAL_TASK_TX_TEST], 1000, _apTestSerialTxTask);
+    apTaskInit(true, &ap_test_serial_task[AP_TEST_SERIAL_TASK_TX_TEST], 1000, _apTestSerialTxTask, true, 0);
 }
 
 void apTestSerialLoop(void)
