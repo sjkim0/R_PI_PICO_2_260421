@@ -28,7 +28,7 @@ set(PICO_BOARD pico2 CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(blink C CXX ASM)
+project(PICO_2_TSET C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
@@ -40,8 +40,9 @@ set(SRC_DIR ${PROJ_DIR}/my_src)
 set(BSP_DIR ${PROJ_DIR}/my_src/bsp)
 set(AP_DIR ${PROJ_DIR}/my_src/ap)
 
-add_executable(blink
+add_executable(PICO_2_TSET
     main.c
+    ${AP_DIR}/ap_adc.c
     ${AP_DIR}/ap_task.c
     ${AP_DIR}/ap_test_gpio.c
     ${AP_DIR}/ap_test_serial.c
@@ -51,21 +52,21 @@ add_executable(blink
     ${BSP_DIR}/bsp.c
     )
     
-target_include_directories(blink PRIVATE
+target_include_directories(PICO_2_TSET PRIVATE
     ${SRC_DIR}
     ${SRC_DIR}/ap
     ${SRC_DIR}/bsp
 )
 
 # pull in common dependencies
-target_link_libraries(blink pico_stdlib)
+target_link_libraries(PICO_2_TSET pico_stdlib hardware_adc)
 
 
-pico_enable_stdio_usb(blink 1) # Enable USB output, disable UART output
-pico_enable_stdio_uart(blink 0) # Disable UART output
+pico_enable_stdio_usb(PICO_2_TSET 1) # Enable USB output, disable UART output
+pico_enable_stdio_uart(PICO_2_TSET 0) # Disable UART output
 
 
 # create map/bin/hex file etc.
-pico_add_extra_outputs(blink)
+pico_add_extra_outputs(PICO_2_TSET)
 
 # add url via pico_set_program_url

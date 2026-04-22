@@ -1,7 +1,9 @@
 #ifndef AP_TASK_H
 #define AP_TASK_H
 
+
 #include "ap_def.h"
+
 
 typedef struct
 {
@@ -12,7 +14,7 @@ typedef struct
 } ap_task_t;
 
 
-void apTaskInit(ap_task_t* task, uint32_t interval_ms, void (*task_func)(void), bool is_active);
+void apTaskInit(bool is_active, ap_task_t* task, uint32_t interval_ms, void (*task_func)(void));
 void apTaskRun(ap_task_t* task);
 void apTaskSetActive(ap_task_t* task, bool is_active);
 

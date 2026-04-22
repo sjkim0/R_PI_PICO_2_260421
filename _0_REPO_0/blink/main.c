@@ -9,12 +9,8 @@
 
 int main()
 {
-    // apTestGpioInit();
-    apTestSerialInit();
+    apInit();
+    apLoop();
 
-    while (true) 
-    {
-        // apTestGpioLoop();
-        apTestSerialLoop();
-    }
+    return 0;
 }
