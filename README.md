@@ -13,3 +13,7 @@ PICO 2 test log
 - adc dma 8bit, 12bit
 - pio dac basic
 - multicore basic
+
+## Left
+- pico 2 w -> bluetooth
+- pico 2 w -> WIFI
