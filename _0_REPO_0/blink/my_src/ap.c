@@ -5,7 +5,8 @@ void apInit(void)
 {
     // apTestGpioInit();
     apTestSerialInit();
-    apAdcInit();
+    // apAdcInit();
+    apAdcDmaInit();
 }
 
 void apLoop(void) 
@@ -14,6 +15,7 @@ void apLoop(void)
     {
         // apTestGpioLoop();
         apTestSerialLoop();
-        apAdcLoop();
+        // apAdcLoop();
+        apAdcDmaLoop();
     }
 }

@@ -46,6 +46,7 @@ add_executable(PICO_2_TSET)
 target_sources(PICO_2_TSET PRIVATE
                main.c
                ${AP_DIR}/ap_adc.c
+               ${AP_DIR}/ap_adc_dma.c
                ${AP_DIR}/ap_task.c
                ${AP_DIR}/ap_test_gpio.c
                ${AP_DIR}/ap_test_serial.c
