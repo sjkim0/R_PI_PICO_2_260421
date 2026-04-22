@@ -8,7 +8,7 @@ PICO 2 test log
 ## Done
 - blink
 - uart basic
-- usb basic
+- usb device mode basic
 - adc polling
 - adc dma 8bit, 12bit
 - pio dac basic
