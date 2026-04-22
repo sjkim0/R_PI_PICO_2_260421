@@ -5,7 +5,7 @@ PICO 2 test log
 - VS Code Pico extension
 
 
-## Done
+## PICO 2 Done
 - blink
 - uart basic
 - usb device mode basic
@@ -13,7 +13,8 @@ PICO 2 test log
 - adc dma 8bit, 12bit
 - pio dac basic
 - multicore basic
+- Identify cmakelist basic structure
 
-## Left
-- pico 2 w -> bluetooth
-- pico 2 w -> WIFI
+## PICO 2 W DONE
+- blink
+- 
