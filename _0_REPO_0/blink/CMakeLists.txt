@@ -39,18 +39,20 @@ set(PROJ_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(SRC_DIR ${PROJ_DIR}/my_src)
 set(BSP_DIR ${PROJ_DIR}/my_src/bsp)
 set(AP_DIR ${PROJ_DIR}/my_src/ap)
+set(PIO_DIR ${PROJ_DIR}/my_src/pio)
 
-add_executable(PICO_2_TSET
-    main.c
-    ${AP_DIR}/ap_adc.c
-    ${AP_DIR}/ap_task.c
-    ${AP_DIR}/ap_test_gpio.c
-    ${AP_DIR}/ap_test_serial.c
+add_executable(PICO_2_TSET)
 
-    ${SRC_DIR}/ap.c
+target_sources(PICO_2_TSET PRIVATE
+               main.c
+               ${AP_DIR}/ap_adc.c
+               ${AP_DIR}/ap_task.c
+               ${AP_DIR}/ap_test_gpio.c
+               ${AP_DIR}/ap_test_serial.c
 
-    ${BSP_DIR}/bsp.c
-    )
+               ${SRC_DIR}/ap.c
+
+               ${BSP_DIR}/bsp.c)
     
 target_include_directories(PICO_2_TSET PRIVATE
     ${SRC_DIR}
@@ -58,8 +60,15 @@ target_include_directories(PICO_2_TSET PRIVATE
     ${SRC_DIR}/bsp
 )
 
+pico_generate_pio_header(PICO_2_TSET ${PIO_DIR}/resistor_dac.pio)
+
 # pull in common dependencies
-target_link_libraries(PICO_2_TSET pico_stdlib hardware_adc)
+target_link_libraries(PICO_2_TSET PRIVATE
+                      pico_stdlib 
+                      hardware_adc
+                      hardware_dma
+                      hardware_pio
+                      pico_multicore)
 
 
 pico_enable_stdio_usb(PICO_2_TSET 1) # Enable USB output, disable UART output

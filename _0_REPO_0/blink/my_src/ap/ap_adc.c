@@ -4,6 +4,12 @@
 #include "hardware/adc.h"
 #include <stdio.h>
 
+#include "hardware/dma.h"
+// For resistor DAC output:
+#include "pico/multicore.h"
+#include "hardware/pio.h"
+#include "resistor_dac.pio.h"
+
 
 enum ENUM_AP_ADC_TASK
 {
@@ -64,5 +70,32 @@ static void _apAdcHelloTask(void)
         adc_select_input(i);
         ap_adc_inst.adc_read_value[i] = adc_read();
         printf("ADC Value %d: %d\n", i, ap_adc_inst.adc_read_value[i]);
+    }
+}
+
+
+// ----------------------------------------------------------------------------
+// Code for driving the "DAC" output for us to measure
+
+// Core 1 is just going to sit and drive samples out continuously. PIO provides
+// consistent sample frequency.
+
+#define OUTPUT_FREQ_KHZ 5
+#define SAMPLE_WIDTH 5
+// This is the green channel on the VGA board
+#define DAC_PIN_BASE 6
+
+void core1_main() {
+    PIO pio = pio0;
+    uint sm = pio_claim_unused_sm(pio0, true);
+    uint offset = pio_add_program(pio0, &resistor_dac_5bit_program);
+    resistor_dac_5bit_program_init(pio0, sm, offset,
+        OUTPUT_FREQ_KHZ * 1000 * 2 * (1 << SAMPLE_WIDTH), DAC_PIN_BASE);
+    while (true) {
+        // Triangle wave
+        for (int i = 0; i < (1 << SAMPLE_WIDTH); ++i)
+            pio_sm_put_blocking(pio, sm, i);
+        for (int i = 0; i < (1 << SAMPLE_WIDTH); ++i)
+            pio_sm_put_blocking(pio, sm, (1 << SAMPLE_WIDTH) - 1 - i);
     }
 }
