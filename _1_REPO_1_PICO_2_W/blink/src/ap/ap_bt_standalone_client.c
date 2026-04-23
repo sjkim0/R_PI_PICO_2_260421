@@ -40,12 +40,48 @@ static void heartbeat_handler(struct btstack_timer_source *ts);
 
 void apBtStandaloneClientInit(void)
 {
+    stdio_init_all();
+    // initialize CYW43 driver architecture (will enable BT if/because CYW43_ENABLE_BLUETOOTH == 1)
+    if (cyw43_arch_init()) {
+        printf("failed to initialise cyw43_arch\n");
+        return;
+    }
+    
+    l2cap_init();  // Bluetooth 데이터 통로의 기반 계층 준비
+    sm_init();     // 보안 매니저 준비
 
+    // server와 다른 부분
+    sm_set_io_capabilities(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
+    // setup empty ATT server - only needed if LE Peripheral does ATT queries on its own, e.g. Android and iOS
+    att_server_init(NULL, NULL, NULL);
+    gatt_client_init();
+    
+    hci_event_callback_registration.callback = &hci_event_handler;
+    hci_add_event_handler(&hci_event_callback_registration);
+    
+    // set one-shot btstack timer
+    heartbeat.process = &heartbeat_handler;
+    btstack_run_loop_set_timer(&heartbeat, LED_SLOW_FLASH_DELAY_MS);
+    btstack_run_loop_add_timer(&heartbeat);
+    
+    // turn on!
+    hci_power_control(HCI_POWER_ON);
+    
 }
 
 void apBtStandaloneClientLoop(void)
 {
+// #if 1 // this is only necessary when using polling (which we aren't, but we're showing it is still safe to call in this case)
+    btstack_run_loop_execute();
+// #else
+    // this core is free to do it's own stuff except when using 'polling' method (in which case you should use 
+    // btstacK_run_loop_ methods to add work to the run loop.
 
+    // this is a forever loop in place of where user code would go.
+    while(true) 
+    {
+        sleep_ms(1000);
+    }
 }
 
 static void client_start(void)
@@ -242,9 +278,12 @@ static void heartbeat_handler(struct btstack_timer_source *ts) {
 
     led_on = !led_on;
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_on);
-    if (listener_registered && led_on) {
+    if (listener_registered && led_on) 
+    {
         quick_flash = !quick_flash;
-    } else if (!listener_registered) {
+    } 
+    else if (!listener_registered) 
+    {
         quick_flash = false;
     }
 

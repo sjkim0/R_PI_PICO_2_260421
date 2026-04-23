@@ -256,7 +256,8 @@ static void _initCyw43Arch(void)
 static void _initBle(void)
 {
     l2cap_init();  // Bluetooth 데이터 통로의 기반 계층 준비
-    sm_init();  // 보안 매니저 준비
+    sm_init();     // 보안 매니저 준비
+    
     /*
      * profile_data ->  .gatt 파일으로부터 헤더파일에 생성됨
      * BLE GATT/ATT 서버 준비, profile_data는 GATT 서버의 구조와 특성을 정의하는 데이터입니다.
@@ -264,7 +265,6 @@ static void _initBle(void)
      * 이를 att_server_init 함수에 전달하여 GATT/ATT 서버를 초기화합니다.
      * 즉, profile_data는 GATT 서버의 구성과 동작을 정의하는 중요한 역할을 합니다.
      */ 
-
     att_server_init(profile_data, att_read_callback, att_write_callback);  // BLE GATT/ATT 서버 준비
 
     // inform about BTstack state
