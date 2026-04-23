@@ -13,6 +13,7 @@ PICO 2 test log
 - adc dma 8bit, 12bit
 - pio dac basic
 - multicore basic
+- pico 2 w -> ble server temperature done
 
 ## Left
 - pico 2 w -> bluetooth
