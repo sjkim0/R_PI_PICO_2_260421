@@ -7,6 +7,6 @@
 
 void apBtStandaloneServerInit(void);
 void apBtStandaloneServerLoop(void);
-
+void key_pressed_func(void *param);
 
 #endif

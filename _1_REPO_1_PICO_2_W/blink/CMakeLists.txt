@@ -36,11 +36,11 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 set(PROJ_DIR ${CMAKE_CURRENT_LIST_DIR})
-set(SRC_DIR ${PROJ_DIR}/src)
-set(BSP_DIR ${PROJ_DIR}/src/bsp)
-set(AP_DIR ${PROJ_DIR}/src/ap)
-set(PIO_DIR ${PROJ_DIR}/src/pio)
-set(GATT_DIR ${PROJ_DIR}/src/gatt)
+set(SRC_DIR  ${PROJ_DIR}/src)
+set(BSP_DIR  ${PROJ_DIR}/src/bsp)
+set(AP_DIR   ${PROJ_DIR}/src/ap)
+set(PIO_DIR  ${PROJ_DIR}/src/pio)
+set(BT_DIR  ${PROJ_DIR}/src/bt)
 
 add_executable(PICO_2_W_TEST)
 
@@ -54,25 +54,35 @@ target_sources(PICO_2_W_TEST PRIVATE
 
 target_include_directories(PICO_2_W_TEST PRIVATE
     ${SRC_DIR}
-    ${SRC_DIR}/ap
-    ${SRC_DIR}/bsp
+    ${BSP_DIR}
+    ${AP_DIR}
+    ${PIO_DIR}
+    ${BT_DIR}
 )
 
-# pull in common dependencies
-target_link_libraries(PICO_2_W_TEST 
+target_link_libraries(PICO_2_W_TEST
                       pico_stdlib
-                      hardware_adc)
+                      pico_btstack_ble
+                      pico_btstack_cyw43
+                      pico_cyw43_arch_none
+                      hardware_adc
+                      )
 
-if (PICO_CYW43_SUPPORTED)
-    target_link_libraries(PICO_2_W_TEST 
-                          pico_cyw43_arch_none
-                          pico_btstack_ble
-                          pico_btstack_cyw43)
+# # pull in common dependencies
+# target_link_libraries(PICO_2_W_TEST 
+#                       pico_stdlib
+#                       hardware_adc)
+
+# if (PICO_CYW43_SUPPORTED)
+#     target_link_libraries(PICO_2_W_TEST 
+#                           pico_cyw43_arch_none
+#                           pico_btstack_ble
+#                           pico_btstack_cyw43)
 
 pico_btstack_make_gatt_header(PICO_2_W_TEST PRIVATE 
-                             ${GATT_DIR}/temp_sensor.gatt)
+                             ${BT_DIR}/temp_sensor.gatt)
 
-endif()
+# endif()
 
 # create map/bin/hex file etc.
 pico_add_extra_outputs(PICO_2_W_TEST)

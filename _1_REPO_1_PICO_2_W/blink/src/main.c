@@ -11,5 +11,6 @@ int main()
 {
     bspInit();
     apInit();
+    
     apLoop();
 }
