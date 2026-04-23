@@ -4,13 +4,12 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "ap.h"
-#include "bsp.h"
+#include "main.h"
 
 int main() 
 {
     bspInit();
     apInit();
-    
+
     apLoop();
 }
