@@ -40,7 +40,7 @@ set(SRC_DIR  ${PROJ_DIR}/src)
 set(BSP_DIR  ${PROJ_DIR}/src/bsp)
 set(AP_DIR   ${PROJ_DIR}/src/ap)
 set(PIO_DIR  ${PROJ_DIR}/src/pio)
-set(BT_DIR  ${PROJ_DIR}/src/bt)
+set(BT_DIR   ${PROJ_DIR}/src/bt)
 
 add_executable(PICO_2_W_TEST)
 
@@ -48,7 +48,8 @@ target_sources(PICO_2_W_TEST PRIVATE
                ${SRC_DIR}/main.c
                ${AP_DIR}/ap_task.c
                ${AP_DIR}/ap_test.c
-               ${AP_DIR}/ap_bt_standalone_server.c
+               ${AP_DIR}/ap_bt_standalone_server.c # PICO W BT STANDALONE SERVER DEFINES
+               ${AP_DIR}/ap_bt_standalone_client.c # PICO W BT STANDALONE CLIENT DEFINES
                ${AP_DIR}/ap.c
                ${BSP_DIR}/bsp.c)
 
@@ -59,6 +60,11 @@ target_include_directories(PICO_2_W_TEST PRIVATE
     ${PIO_DIR}
     ${BT_DIR}
 )
+
+# PICO W BT STANDALONE CLIENT DEFINES
+# target_compile_definitions(PICO_2_W_TEST PRIVATE
+#     RUNNING_AS_CLIENT=1
+# )
 
 target_link_libraries(PICO_2_W_TEST
                       pico_stdlib
