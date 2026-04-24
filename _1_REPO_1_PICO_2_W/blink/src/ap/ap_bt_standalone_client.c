@@ -100,7 +100,8 @@ static bool advertisement_report_contains_service(uint16_t service, uint8_t *adv
 
     // iterate over advertisement data
     ad_context_t context;
-    for (ad_iterator_init(&context, adv_len, adv_data) ; ad_iterator_has_more(&context) ; ad_iterator_next(&context)){
+    for (ad_iterator_init(&context, adv_len, adv_data); ad_iterator_has_more(&context); ad_iterator_next(&context))
+    {
         uint8_t data_type = ad_iterator_get_data_type(&context);
         uint8_t data_size = ad_iterator_get_data_len(&context);
         const uint8_t * data = ad_iterator_get_data(&context);
@@ -216,20 +217,30 @@ static void hci_event_handler(uint8_t packet_type, uint16_t channel, uint8_t *pa
     if (packet_type != HCI_EVENT_PACKET) return;
 
     uint8_t event_type = hci_event_packet_get_type(packet);
-    switch(event_type){
+    switch(event_type)
+    {
         case BTSTACK_EVENT_STATE:
-            if (btstack_event_state_get_state(packet) == HCI_STATE_WORKING) {
+            if (btstack_event_state_get_state(packet) == HCI_STATE_WORKING) 
+            {
                 gap_local_bd_addr(local_addr);
                 printf("BTstack up and running on %s.\n", bd_addr_to_str(local_addr));
                 client_start();
-            } else {
+            } 
+            else 
+            {
                 state = TC_OFF;
             }
             break;
         case GAP_EVENT_ADVERTISING_REPORT:
-            if (state != TC_W4_SCAN_RESULT) return;
+            if (state != TC_W4_SCAN_RESULT) 
+            {
+                return;
+            }
             // check name in advertisement
-            if (!advertisement_report_contains_service(ORG_BLUETOOTH_SERVICE_ENVIRONMENTAL_SENSING, packet)) return;
+            if (!advertisement_report_contains_service(ORG_BLUETOOTH_SERVICE_ENVIRONMENTAL_SENSING, packet)) 
+            {
+                return;
+            }
             // store address and type
             gap_event_advertising_report_get_address(packet, server_addr);
             server_addr_type = gap_event_advertising_report_get_address_type(packet);

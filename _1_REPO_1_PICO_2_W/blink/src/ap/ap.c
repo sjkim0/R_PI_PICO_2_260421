@@ -4,8 +4,8 @@
 void apInit(void) 
 {
     // apTestInit();
-    // apBtStandaloneServerInit();
-    apBtStandaloneClientInit();
+    apBtStandaloneServerInit();
+    // apBtStandaloneClientInit();
 }
 
 void apLoop(void) 
@@ -13,7 +13,7 @@ void apLoop(void)
     while(true)
     {
         // apTestLoop();
-        // apBtStandaloneServerLoop();
-        apBtStandaloneClientLoop();
+        apBtStandaloneServerLoop();
+        // apBtStandaloneClientLoop();
     }
 }
